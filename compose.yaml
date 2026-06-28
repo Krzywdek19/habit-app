@@ -1,0 +1,15 @@
+
+services:
+  database:
+    image: postgres:16-alpine
+    container_name: habit_app_postgres
+    environment:
+      POSTGRES_DB: habit_app
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - habit_app_database_data:/var/lib/postgresql/data
+volumes:
+  habit_app_database_data:

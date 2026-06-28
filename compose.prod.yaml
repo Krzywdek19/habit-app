@@ -1,0 +1,37 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: habit_app_php
+    environment:
+      APP_ENV: prod
+      APP_DEBUG: 0
+      APP_SECRET: ${APP_SECRET}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}?serverVersion=16&charset=utf8
+    depends_on:
+      - database
+
+  nginx:
+    image: nginx:alpine
+    container_name: habit_app_nginx
+    ports:
+      - "${APP_PORT}:80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./:/var/www/app:ro
+    depends_on:
+      - php
+
+  database:
+    image: postgres:16-alpine
+    container_name: habit_app_postgres_prod_like
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - habit_app_prod_database_data:/var/lib/postgresql/data
+
+volumes:
+  habit_app_prod_database_data:
