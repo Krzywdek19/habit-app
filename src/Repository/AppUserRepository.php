@@ -45,4 +45,9 @@ class AppUserRepository extends ServiceEntityRepository
     {
         return $this->findOneBy(['email' => $email]) !== null;
     }
+
+    public function findByEmail(string $email): ?AppUser
+    {
+        return $this->findOneBy(['email' => $email]);
+    }
 }
