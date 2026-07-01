@@ -1,9 +1,13 @@
 <?php
 
+namespace App\Tests\Controller;
+
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class HabitControllerTest extends WebTestCase {
-    public function testShouldReturnTask() : void{
+class HabitControllerTest extends WebTestCase
+{
+    public function testShouldReturnTask(): void
+    {
         $client = static::createClient();
         $client->request('GET', '/api/v1/habits/1');
 
@@ -14,8 +18,8 @@ class HabitControllerTest extends WebTestCase {
         $this->assertJson($content);
         $data = json_decode($content, true);
 
-        $this->assertEquals(1,$data['id']);
-        $this->assertEquals('Habit',$data['title']);
+        $this->assertEquals(1, $data['id']);
+        $this->assertEquals('Habit', $data['title']);
         $this->assertFalse($data['completed']);
 
     }
